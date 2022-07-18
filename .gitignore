@@ -1,0 +1,5 @@
+/.vscode
+/bazel-bin
+/bazel-cppminlisp
+/bazel-out
+/bazel-testlogs
