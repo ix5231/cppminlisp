@@ -4,6 +4,6 @@ cc_library(
     hdrs = glob(["*.hpp"]),
     visibility = ["//test:__pkg__"],
     deps = [
-        "@boost//:format"
+        "@boost//:format",
     ]
 )
