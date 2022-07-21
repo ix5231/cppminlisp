@@ -7,8 +7,10 @@
 
 class Lexer {
   const std::string &source;
-  const std::string::const_iterator next;
-  static bool Lexer::is_extended_alpha(const char ch);
+  std::string::const_iterator next;
+  std::string read_identifier();
+  int read_integer();
+  static bool is_extended_alpha(const char ch);
 public:
   Lexer(const std::string &_source);
   Token nextToken();

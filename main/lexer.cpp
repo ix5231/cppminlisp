@@ -13,16 +13,35 @@ Token Lexer::nextToken() {
   while (next != source.end()) {
     switch (*next) {
     case '(':
-      return (Token) { DELIM_BRACKET_START, };
+      ++next;
+      return (Token){
+          DELIM_BRACKET_START,
+      };
     case ')':
-      return (Token) { DELIM_BRACKET_END, };
+      ++next;
+      return (Token){
+          DELIM_BRACKET_END,
+      };
     default:
-      if (isdigit(*next)) {
-        throw NotImplemented();
+      if (isspace(*next)) {
+        ++next;
       } else if (isalpha(*next) or is_extended_alpha(*next)) {
-        throw NotImplemented();
+        std::string val = read_identifier();
+        return (Token){
+            OPERATOR,
+            val,
+            0,
+        };
+      } else if (isdigit(*next)) {
+        int val = read_integer();
+        return (Token){
+            LITERAL_INTEGER,
+            "",
+            val,
+        };
       } else {
-        throw std::logic_error("Unexpected char found: " + *next);
+        throw std::logic_error(std::string("Unexpected char found: \"") +
+                               *next + std::string("\""));
       }
       break;
     }
@@ -31,10 +50,43 @@ Token Lexer::nextToken() {
   throw std::logic_error("Iterator exhausted");
 }
 
+std::string Lexer::read_identifier() {
+  int l = 0;
+  while (next + l != source.end()) {
+    if (isalpha(*(next + l)) or is_extended_alpha(*(next + l)) or
+        isdigit(*(next + l))) {
+      l++;
+    } else {
+      std::string ret(next, next + l);
+      next += l;
+      return ret;
+    }
+  }
+
+  throw std::logic_error("Iterator exhausted");
+}
+
+int Lexer::read_integer() {
+  int l = 0;
+  while (next + l != source.end()) {
+    if (isdigit(*(next + l))) {
+      l++;
+    } else {
+      std::string subst(next, next + l);
+      int ret = std::stoi(subst);
+
+      next += l;
+      return ret;
+    }
+  }
+
+  throw std::logic_error("Iterator exhausted");
+}
+
 bool Lexer::is_extended_alpha(const char ch) {
-  const std::unordered_set<char> extended_alphabet{'!', '$', '%', '&', '*', '+',
-                                                   '-', '.', '/', ':', '<', '=',
-                                                   '>', '?', '@', '^', '_', '~'};
+  const std::unordered_set<char> extended_alphabet{
+      '!', '$', '%', '&', '*', '+', '-', '.', '/',
+      ':', '<', '=', '>', '?', '@', '^', '_', '~'};
   auto it = extended_alphabet.find(ch);
   return it != extended_alphabet.end();
 }
