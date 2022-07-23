@@ -14,7 +14,6 @@ enum ValueType {
 
 struct Value {
 private:
-  Value();
   Value(const int i);
 
 public:
@@ -22,10 +21,7 @@ public:
   int value_integer;
   Gc<ConsCell> value_conscell;
 
-  ~Value();
   static inline Value integer(const int i) { return Value(i); }
-
-  Value &operator=(const Value &v);
 };
 
 #endif // VALUE_HPP
