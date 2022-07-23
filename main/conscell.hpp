@@ -10,6 +10,9 @@ struct Value;
 struct ConsCell {
   Gc<Value> car;
   Gc<Value> cdr;
+
+  ConsCell(const Value &_car, const Value &_cdr);
+  ConsCell(const Value &&_car, const Value &&_cdr);
 };
 
 #endif // CONSCELL_HPP

@@ -15,6 +15,8 @@ enum ValueType {
 struct Value {
 private:
   Value(const int i);
+  Value(const ConsCell &cc);
+  Value(const ConsCell &&cc);
 
 public:
   ValueType type;
@@ -22,6 +24,8 @@ public:
   Gc<ConsCell> value_conscell;
 
   static inline Value integer(const int i) { return Value(i); }
+  static inline Value cons(const ConsCell &cc) { return Value(cc); }
+  static inline Value cons(const ConsCell &&cc) { return Value(cc); }
 };
 
 #endif // VALUE_HPP

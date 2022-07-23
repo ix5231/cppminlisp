@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "conscell.hpp"
 #include "lexer.hpp"
 #include "util.hpp"
 #include "value.hpp"
@@ -21,11 +22,13 @@ Value Interpreter::evalProcedure() {
   if (t.type != OPERATOR) {
     throw std::logic_error("Expected OPERATOR");
   }
-  if (t.value_symbol != "+") {
+  if (t.value_symbol == "cons") {
+    return evalCons(evalArgs());
+  } else if (t.value_symbol == "+") {
+    return evalPlus(evalArgs());
+  } else {
     throw NotImplemented();
   }
-
-  return evalPlus(evalArgs());
 }
 
 std::vector<Value> Interpreter::evalArgs() {
@@ -48,10 +51,15 @@ std::vector<Value> Interpreter::evalArgs() {
     throw std::logic_error("Expected DELIM_BRACKET_END");
   }
 
-  args.emplace_back(Value::integer(left));
-  args.emplace_back(Value::integer(right));
+  return {Value::integer(left), Value::integer(right)};
+}
 
-  return args;
+Value Interpreter::evalCons(std::vector<Value> args) {
+  if (args.size() != 2) {
+    throw std::logic_error("cons expects exactly 2 args");
+  }
+
+  return Value::cons(ConsCell(std::move(args[0]), std::move(args[1])));
 }
 
 Value Interpreter::evalPlus(std::vector<Value> args) {
