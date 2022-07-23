@@ -5,10 +5,11 @@
 #include "lexer.hpp"
 #include "token.hpp"
 #include "util.hpp"
+#include "value.hpp"
 
 Interpreter::Interpreter(const std::string &_source) : lexer(_source) {}
 
-int Interpreter::eval() {
+Value Interpreter::eval() {
   auto t = lexer.next_token();
   if (t.type != DELIM_BRACKET_START) {
     throw std::logic_error("Expected DELIM_BRACKET_START");
@@ -39,5 +40,5 @@ int Interpreter::eval() {
     throw std::logic_error("Expected DELIM_BRACKET_END");
   }
 
-  return left + right;
+  return Value::integer(left + right);
 }

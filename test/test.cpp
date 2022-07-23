@@ -7,7 +7,8 @@
 TEST(Arithmetic, BasicPlus) {
   std::string src = "(+ 2 143)";
   Interpreter p(src);
-  EXPECT_EQ(p.eval(), 145);
+  auto v = p.eval();
+  EXPECT_EQ(v.value_integer, 145);
 }
 
 TEST(Lexer, Basic) {

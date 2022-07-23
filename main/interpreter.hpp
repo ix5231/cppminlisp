@@ -4,6 +4,7 @@
 #include <string>
 
 #include "lexer.hpp"
+#include "value.hpp"
 
 class Interpreter {
 private:
@@ -11,7 +12,7 @@ private:
 
 public:
   Interpreter(const std::string &_source);
-  int eval();
+  Value eval();
 };
 
 #endif // INTERPRETER_HPP
