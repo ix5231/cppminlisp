@@ -3,11 +3,13 @@
 
 #include <memory>
 
-#include "value.hpp"
+#include "gc.hpp"
+
+struct Value;
 
 struct ConsCell {
-  std::unique_ptr<Value> car;
-  std::unique_ptr<Value> cdr;
+  Gc<Value> car;
+  Gc<Value> cdr;
 };
 
 #endif // CONSCELL_HPP

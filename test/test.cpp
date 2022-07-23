@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "main/conscell.hpp"
 #include "main/interpreter.hpp"
 #include "main/lexer.hpp"
 #include "main/token.hpp"
@@ -10,6 +11,15 @@ TEST(Arithmetic, BasicPlus) {
   auto v = p.eval();
   EXPECT_EQ(v.value_integer, 145);
 }
+
+// TEST(ConsCell, SimplePair) {
+//   std::string src = "(cons 1 2)";
+//   Interpreter p(src);
+//   auto v = p.eval();
+//   EXPECT_EQ(v.type, CONSCELL);
+//   ConsCell *cc = v.value_conscell.get();
+//   // EXPECT_EQ(, 1);
+// }
 
 TEST(Lexer, Basic) {
   std::string src = "(+ 15 21)";
