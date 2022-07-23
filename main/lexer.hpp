@@ -11,9 +11,10 @@ class Lexer {
   std::string read_identifier();
   int read_integer();
   static bool is_extended_alpha(const char ch);
+
 public:
   Lexer(const std::string &_source);
-  Token nextToken();
+  Token next_token();
 };
 
 #endif // LEXER_HPP

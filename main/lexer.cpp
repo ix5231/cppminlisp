@@ -9,7 +9,7 @@
 Lexer::Lexer(const std::string &_source)
     : source(_source), next(_source.begin()) {}
 
-Token Lexer::nextToken() {
+Token Lexer::next_token() {
   while (next != source.end()) {
     switch (*next) {
     case '(':
