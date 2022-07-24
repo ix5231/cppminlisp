@@ -25,15 +25,19 @@ Value Interpreter::evalProcedure() {
   std::string opname = t.value_symbol;
 
   std::vector<Value> args;
-
   t = lexer.next_token();
   while (t.type != DELIM_BRACKET_END) {
-    if (t.type != LITERAL_INTEGER) {
+    if (t.type == DELIM_BRACKET_START) {
+      args.emplace_back(evalProcedure());
+      t = lexer.next_token();
+    } else if (t.type == LITERAL_INTEGER) {
+      args.emplace_back(Value::integer(t.value_integer));
+      t = lexer.next_token();
+    } else {
       throw NotImplemented();
     }
-    args.emplace_back(Value::integer(t.value_integer));
-    t = lexer.next_token();
   }
+  lexer.next_token();
 
   if (opname == "cons") {
     return evalCons(args);
