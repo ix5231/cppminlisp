@@ -8,6 +8,7 @@ enum TokenType {
   DELIM_BRACKET_END,
   LITERAL_INTEGER,
   OPERATOR,
+  EOS,
 };
 
 struct Token {

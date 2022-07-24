@@ -22,10 +22,23 @@ Value Interpreter::evalProcedure() {
   if (t.type != OPERATOR) {
     throw std::logic_error("Expected OPERATOR");
   }
-  if (t.value_symbol == "cons") {
-    return evalCons(evalArgs());
-  } else if (t.value_symbol == "+") {
-    return evalPlus(evalArgs());
+  std::string opname = t.value_symbol;
+
+  std::vector<Value> args;
+
+  t = lexer.next_token();
+  while (t.type != DELIM_BRACKET_END) {
+    if (t.type != LITERAL_INTEGER) {
+      throw NotImplemented();
+    }
+    args.emplace_back(Value::integer(t.value_integer));
+    t = lexer.next_token();
+  }
+
+  if (opname == "cons") {
+    return evalCons(args);
+  } else if (opname == "+") {
+    return evalPlus(args);
   } else {
     throw NotImplemented();
   }

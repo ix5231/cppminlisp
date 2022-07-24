@@ -47,7 +47,7 @@ Token Lexer::next_token() {
     }
   }
 
-  throw std::logic_error("Iterator exhausted");
+  return (Token){EOS};
 }
 
 std::string Lexer::read_identifier() {
