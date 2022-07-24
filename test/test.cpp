@@ -52,11 +52,39 @@ TEST(ConsCell, DoubleCons) {
   EXPECT_EQ(cc2.cdr->value_integer, 3);
 }
 
+TEST(ConsCell, Complex) {
+  std::string src = "(cons (cons 1 2) (cons 3 (cons 4 5)))";
+  Interpreter p(src);
+
+  auto v = p.eval();
+  EXPECT_EQ(v.type, CONSCELL);
+
+  ConsCell &cc = *v.value_conscell;
+  EXPECT_EQ(cc.car->type, CONSCELL);
+  EXPECT_EQ(cc.cdr->type, CONSCELL);
+
+  ConsCell &cc_left = *cc.car->value_conscell;
+  EXPECT_EQ(cc_left.car->type, INTEGER);
+  EXPECT_EQ(cc_left.car->value_integer, 1);
+  EXPECT_EQ(cc_left.cdr->type, INTEGER);
+  EXPECT_EQ(cc_left.cdr->value_integer, 2);
+
+  ConsCell &cc_right = *cc.cdr->value_conscell;
+  EXPECT_EQ(cc_right.car->type, INTEGER);
+  EXPECT_EQ(cc_right.car->value_integer, 3);
+  EXPECT_EQ(cc_right.cdr->type, CONSCELL);
+
+  ConsCell &cc_right_right = *cc_right.cdr->value_conscell;
+  EXPECT_EQ(cc_right_right.car->type, INTEGER);
+  EXPECT_EQ(cc_right_right.car->value_integer, 4);
+  EXPECT_EQ(cc_right_right.cdr->type, INTEGER);
+  EXPECT_EQ(cc_right_right.cdr->value_integer, 5);
+}
+
 TEST(Lexer, Basic) {
   std::string src = "(+ 15 21)";
   Lexer l(src);
-  Token t;
-  t = l.next_token();
+  Token t = l.current_token();
   EXPECT_EQ(t.type, DELIM_BRACKET_START);
   t = l.next_token();
   EXPECT_EQ(t.type, OPERATOR);

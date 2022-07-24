@@ -13,26 +13,23 @@ Interpreter::Interpreter(const std::string &_source) : lexer(_source) {}
 Value Interpreter::eval() { return evalProcedure(); }
 
 Value Interpreter::evalProcedure() {
-  auto t = lexer.next_token();
-  if (t.type != DELIM_BRACKET_START) {
+  if (lexer.current_token().type != DELIM_BRACKET_START) {
     throw std::logic_error("Expected DELIM_BRACKET_START");
   }
 
-  t = lexer.next_token();
-  if (t.type != OPERATOR) {
+  if (lexer.next_token().type != OPERATOR) {
     throw std::logic_error("Expected OPERATOR");
   }
-  std::string opname = t.value_symbol;
+  std::string opname = lexer.current_token().value_symbol;
 
+  lexer.next_token();
   std::vector<Value> args;
-  t = lexer.next_token();
-  while (t.type != DELIM_BRACKET_END) {
-    if (t.type == DELIM_BRACKET_START) {
+  while (lexer.current_token().type != DELIM_BRACKET_END) {
+    if (lexer.current_token().type == DELIM_BRACKET_START) {
       args.emplace_back(evalProcedure());
-      t = lexer.next_token();
-    } else if (t.type == LITERAL_INTEGER) {
-      args.emplace_back(Value::integer(t.value_integer));
-      t = lexer.next_token();
+    } else if (lexer.current_token().type == LITERAL_INTEGER) {
+      args.emplace_back(Value::integer(lexer.current_token().value_integer));
+      lexer.next_token();
     } else {
       throw NotImplemented();
     }
