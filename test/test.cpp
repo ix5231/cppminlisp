@@ -33,6 +33,25 @@ TEST(ConsCell, SimplePair) {
   EXPECT_EQ(cc.cdr->value_integer, 2);
 }
 
+TEST(ConsCell, DoubleCons) {
+  std::string src = "(cons 1 (cons 2 3))";
+  Interpreter p(src);
+
+  auto v = p.eval();
+  EXPECT_EQ(v.type, CONSCELL);
+
+  ConsCell &cc = *v.value_conscell.get();
+  EXPECT_EQ(cc.car->type, INTEGER);
+  EXPECT_EQ(cc.car->value_integer, 1);
+  EXPECT_EQ(cc.cdr->type, CONSCELL);
+
+  ConsCell &cc2 = *cc.cdr->value_conscell.get();
+  EXPECT_EQ(cc2.car->type, INTEGER);
+  EXPECT_EQ(cc2.car->value_integer, 2);
+  EXPECT_EQ(cc2.cdr->type, INTEGER);
+  EXPECT_EQ(cc2.cdr->value_integer, 3);
+}
+
 TEST(Lexer, Basic) {
   std::string src = "(+ 15 21)";
   Lexer l(src);
