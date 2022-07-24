@@ -35,23 +35,15 @@ std::vector<Value> Interpreter::evalArgs() {
   std::vector<Value> args;
 
   auto t = lexer.next_token();
-  if (t.type != LITERAL_INTEGER) {
-    throw std::logic_error("Expected LITERAL_INTEGER");
-  }
-  int left = t.value_integer;
-
-  t = lexer.next_token();
-  if (t.type != LITERAL_INTEGER) {
-    throw std::logic_error("Expected LITERAL_INTEGER");
-  }
-  int right = t.value_integer;
-
-  t = lexer.next_token();
-  if (t.type != DELIM_BRACKET_END) {
-    throw std::logic_error("Expected DELIM_BRACKET_END");
+  while (t.type != DELIM_BRACKET_END) {
+    if (t.type != LITERAL_INTEGER) {
+      throw NotImplemented();
+    }
+    args.emplace_back(Value::integer(t.value_integer));
+    t = lexer.next_token();
   }
 
-  return {Value::integer(left), Value::integer(right)};
+  return args;
 }
 
 Value Interpreter::evalCons(std::vector<Value> args) {

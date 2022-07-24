@@ -12,6 +12,13 @@ TEST(Arithmetic, BasicPlus) {
   EXPECT_EQ(v.value_integer, 145);
 }
 
+TEST(Arithmetic, PlusN) {
+  std::string src = "(+ 1 2 3 4)";
+  Interpreter p(src);
+  auto v = p.eval();
+  EXPECT_EQ(v.value_integer, 10);
+}
+
 TEST(ConsCell, SimplePair) {
   std::string src = "(cons 1 2)";
   Interpreter p(src);
