@@ -44,21 +44,6 @@ Value Interpreter::evalProcedure() {
   }
 }
 
-std::vector<Value> Interpreter::evalArgs() {
-  std::vector<Value> args;
-
-  auto t = lexer.next_token();
-  while (t.type != DELIM_BRACKET_END) {
-    if (t.type != LITERAL_INTEGER) {
-      throw NotImplemented();
-    }
-    args.emplace_back(Value::integer(t.value_integer));
-    t = lexer.next_token();
-  }
-
-  return args;
-}
-
 Value Interpreter::evalCons(std::vector<Value> args) {
   if (args.size() != 2) {
     throw std::logic_error("cons expects exactly 2 args");

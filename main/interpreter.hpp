@@ -11,7 +11,6 @@ class Interpreter {
 private:
   Lexer lexer;
   Value evalProcedure();
-  std::vector<Value> evalArgs();
   static Value evalCons(std::vector<Value> args);
   static Value evalPlus(std::vector<Value> args);
 
