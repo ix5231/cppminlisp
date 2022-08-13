@@ -10,7 +10,16 @@
 
 Interpreter::Interpreter(const std::string &_source) : lexer(_source) {}
 
-Value Interpreter::eval() { return evalProcedure(); }
+Value Interpreter::eval() {
+  switch (lexer.current_token().type) {
+  case LITERAL_INTEGER:
+    return Value::integer(lexer.current_token().value_integer);
+  case DELIM_BRACKET_START:
+    return evalProcedure();
+  default:
+    throw std::logic_error("Unexpected token appeared");
+  }
+}
 
 Value Interpreter::evalProcedure() {
   if (lexer.current_token().type != DELIM_BRACKET_START) {

@@ -61,13 +61,13 @@ std::string Lexer::read_identifier() {
         isdigit(*(next + l))) {
       l++;
     } else {
-      std::string ret(next, next + l);
-      next += l;
-      return ret;
+      break;
     }
   }
 
-  throw std::logic_error("Iterator exhausted");
+  std::string ret(next, next + l);
+  next += l;
+  return ret;
 }
 
 int Lexer::read_integer() {
@@ -76,15 +76,15 @@ int Lexer::read_integer() {
     if (isdigit(*(next + l))) {
       l++;
     } else {
-      std::string subst(next, next + l);
-      int ret = std::stoi(subst);
-
-      next += l;
-      return ret;
+      break;
     }
   }
 
-  throw std::logic_error("Iterator exhausted");
+  std::string subst(next, next + l);
+  int ret = std::stoi(subst);
+
+  next += l;
+  return ret;
 }
 
 bool Lexer::is_extended_alpha(const char ch) {

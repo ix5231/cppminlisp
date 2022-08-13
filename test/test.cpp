@@ -5,6 +5,13 @@
 #include "main/lexer.hpp"
 #include "main/token.hpp"
 
+TEST(Arithmetic, Literal) {
+  std::string src = "3";
+  Interpreter p(src);
+  auto v = p.eval();
+  EXPECT_EQ(v.value_integer, 3);
+}
+
 TEST(Arithmetic, BasicPlus) {
   std::string src = "(+ 2 143)";
   Interpreter p(src);
