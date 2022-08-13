@@ -35,7 +35,7 @@ Value Interpreter::evalProcedure() {
   std::vector<Value> args;
   while (lexer.current_token().type != DELIM_BRACKET_END) {
     if (lexer.current_token().type == DELIM_BRACKET_START) {
-      args.emplace_back(evalProcedure());
+      args.emplace_back(eval());
     } else if (lexer.current_token().type == LITERAL_INTEGER) {
       args.emplace_back(Value::integer(lexer.current_token().value_integer));
       lexer.next_token();
